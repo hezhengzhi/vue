@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>iview</title>
+    <link rel="stylesheet" type="text/css" href="http://unpkg.com/iview/dist/styles/iview.css">
+    <script type="text/javascript" src="http://vuejs.org/js/vue.min.js"></script>
+    <script type="text/javascript" src="http://unpkg.com/iview/dist/iview.min.js"></script>
+</head>
+<body>
+<div id="app">
+    <i-button type="primary">Primary</i-button>
+    <i-table :columns="columns1" :data="data1"></i-table>
+</div>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            columns1: [
+                {
+                    title: 'Name',
+                    key: 'name'
+                },
+                {
+                    title: 'Age',
+                    key: 'age'
+                },
+                {
+                    title: 'Address',
+                    key: 'address'
+                }
+            ],
+            data1: [
+                {
+                    name: 'John Brown',
+                    age: 18,
+                    address: 'New York No. 1 Lake Park',
+                    date: '2016-10-03'
+                },
+                {
+                    name: 'Jim Green',
+                    age: 24,
+                    address: 'London No. 1 Lake Park',
+                    date: '2016-10-01'
+                },
+                {
+                    name: 'Joe Black',
+                    age: 30,
+                    address: 'Sydney No. 1 Lake Park',
+                    date: '2016-10-02'
+                },
+                {
+                    name: 'Jon Snow',
+                    age: 26,
+                    address: 'Ottawa No. 2 Lake Park',
+                    date: '2016-10-04'
+                }
+            ]
+        }
+    })
+</script>
+</body>
+</html>
