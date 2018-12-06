@@ -6,57 +6,86 @@
     <link rel="stylesheet" type="text/css" href="http://unpkg.com/iview/dist/styles/iview.css">
     <script type="text/javascript" src="http://vuejs.org/js/vue.min.js"></script>
     <script type="text/javascript" src="http://unpkg.com/iview/dist/iview.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
 </head>
 <body>
 <div id="app">
-    <i-button type="primary">Primary</i-button>
-    <i-table :columns="columns1" :data="data1"></i-table>
+    <row :gutter="16">
+        <i-col span="4">
+            <i-button type="primary">Primary</i-button>
+        </i-col>
+        <i-col span="4">
+            <i-select v-model="model1" filterable remote :remote-method="method1" :loading="loading1" placeholder="please enter username">
+                <i-option v-for="option in option1">{{option.label}}</i-option>
+            </i-select>
+        </i-col>
+    </row>
+    <row>
+        <i-col span="24">
+            <i-table :columns="columns1" :data="showList"></i-table>
+            <i-page :total="100" />
+        </i-col>
+    </row>
+    <row>
+        <i-col span="24">
+            <Page :total="total" page-size="size" style="float:right" show-total @on-change="onchange"/>
+        </i-col>
+    </row>
+
 </div>
 <script>
-    new Vue({
+    var app=new Vue({
         el: '#app',
         data: {
             columns1: [
                 {
-                    title: 'Name',
-                    key: 'name'
+                    title: 'UserId',
+                    key: 'userId'
                 },
                 {
-                    title: 'Age',
-                    key: 'age'
-                },
-                {
-                    title: 'Address',
-                    key: 'address'
+                    title: 'UserName',
+                    key: 'userName'
                 }
             ],
-            data1: [
-                {
-                    name: 'John Brown',
-                    age: 18,
-                    address: 'New York No. 1 Lake Park',
-                    date: '2016-10-03'
-                },
-                {
-                    name: 'Jim Green',
-                    age: 24,
-                    address: 'London No. 1 Lake Park',
-                    date: '2016-10-01'
-                },
-                {
-                    name: 'Joe Black',
-                    age: 30,
-                    address: 'Sydney No. 1 Lake Park',
-                    date: '2016-10-02'
-                },
-                {
-                    name: 'Jon Snow',
-                    age: 26,
-                    address: 'Ottawa No. 2 Lake Park',
-                    date: '2016-10-04'
+            data1:[],
+            model1:"",
+            loading1:false,
+            option1:[],
+            total:0,
+            size:10,
+            showList:[]
+        },
+        methods:{
+            method1(query){
+                if (query!=''){
+                    app.loading1=true;
+                    setTimeout(()=>{
+                        console.info(query)
+                        this.$http.get('/findByName?name='+query).then(function (res) {
+                            app.loading1=false;
+                            console.info(res.body)
+                            app.option1=res.body
+                        })
+                    },200)
+                }else {
+                    this.option1=[];
                 }
-            ]
+            },
+            onchange(index){
+                var start=(index-1)*app.size;
+                var end=index*app.size;
+                app.showList=app.data1.slice(start,end)
+
+            }
+        },
+        mounted:function () {
+            this.$http.get('/findData').then(function (res) {
+                app.data1=res.body;
+                app.total=app.data1.length;
+                app.showList=app.data1.slice(0,app.size);
+            })
         }
+
     })
 </script>
 </body>
