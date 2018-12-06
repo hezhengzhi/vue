@@ -33,6 +33,8 @@ public class IndexController {
 
     @ResponseBody
     @RequestMapping("/findByName")
+
+
     public List<Vo>findByName(String name){
         return testService.findByName(name);
     }
