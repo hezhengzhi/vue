@@ -24,4 +24,19 @@ public class IviewApplicationTests {
         Assert.assertNotNull(eaUsers);
     }
 
+
+    private void method(String string){
+        System.out.println("String");
+    }
+    private void method(Object object){
+        System.out.println("Object");
+    }
+    private void method(Integer integer){
+        System.out.println("String");
+    }
+
+    public static void main(String[] args) {
+        IviewApplicationTests a=new IviewApplicationTests();
+        a.method(2);
+    }
 }
